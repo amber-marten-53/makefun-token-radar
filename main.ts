@@ -80,7 +80,6 @@ function impliedValue(protocol: any, asOf: string | number): number {
   return tvl * baseMult * mom * breadth * ageDisc;
 }
 
-// __NEXT_CHUNK__
 function farmSteps(protocol: any): string[] {
   const name = protocol.name || 'Protocol';
   const category = (protocol.category || '').toLowerCase();
@@ -151,7 +150,6 @@ function farmSteps(protocol: any): string[] {
 
   return steps;
 }
-// __NEXT_CHUNK__
 function generateHistory(protocol: any): any[] {
   const baseVal = impliedValue(protocol, snapshot.as_of || Date.now());
   const history = [];
