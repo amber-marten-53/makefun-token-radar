@@ -152,3 +152,73 @@ function farmSteps(protocol: any): string[] {
   return steps;
 }
 // __NEXT_CHUNK__
+  const rows = tokens.map(token => {
+    return {
+      symbol: token.symbol,
+      name: token.name,
+      chain: token.chain,
+      launch_date: token.launch_date,
+      current_price_usd: token.current_price_usd,
+      market_cap_usd: token.market_cap_usd,
+      volume_24h_usd: token.volume_24h_usd,
+      liquidity_usd: token.liquidity_usd,
+      fdv_usd: token.fdv_usd,
+      holder_count: token.holder_count,
+      score: token.score,
+      risk_rating: token.risk_rating,
+      checklist: generateChecklist(token),
+      history: generateHistory(token)
+    };
+  });
+
+  const outDir = Deno.args[0] || 'out';
+  await Deno.mkdir(outDir, { recursive: true });
+
+  const board = { rows };
+  await Deno.writeTextFile(`${outDir}/board.json`, JSON.stringify(board, null, 2));
+
+  const asOf = new Date().toISOString();
+  const floorUsd = 1000; // default floor usd or calculated
+  const dataJsContent = `window.RADAR_DATA = ${JSON.stringify({ ...board, as_of: asOf, floor_usd: floorUsd }, null, 2)};\n`;
+  await Deno.writeTextFile(`${outDir}/data.js`, dataJsContent);
+
+  try {
+    const dashStat = await Deno.stat('dashboard');
+    if (dashStat.isDirectory) {
+      await cpDir('dashboard', `${outDir}/dashboard`);
+    }
+  } catch {}
+
+  try {
+    const ssStat = await Deno.stat('screenshots');
+    if (ssStat.isDirectory) {
+      await cpDir('screenshots', `${outDir}/screenshots`);
+    }
+  } catch {}
+
+  try {
+    const dossierText = buildDossier({ tokens, rows });
+    const trimmedDossier = dossierText.length > 65535 ? dossierText.slice(0, 65535) : dossierText;
+    await Deno.writeTextFile(`${outDir}/dossier.json`, JSON.stringify({ dossier: trimmedDossier }, null, 2));
+  } catch (e) {
+    console.error("Error building dossier:", e);
+  }
+}
+
+async function cpDir(src: string, dest: string) {
+  await Deno.mkdir(dest, { recursive: true });
+  for await (const entry of Deno.readDir(src)) {
+    const srcPath = `${src}/${entry.name}`;
+    const destPath = `${dest}/${entry.name}`;
+    if (entry.isDirectory) {
+      await cpDir(srcPath, destPath);
+    } else if (entry.isFile) {
+      await Deno.copyFile(srcPath, destPath);
+    }
+  }
+}
+
+main().catch(err => {
+  console.error(err);
+  Deno.exit(1);
+});
