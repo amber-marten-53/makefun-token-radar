@@ -81,3 +81,74 @@ function impliedValue(protocol: any, asOf: string | number): number {
 }
 
 // __NEXT_CHUNK__
+function farmSteps(protocol: any): string[] {
+  const name = protocol.name || 'Protocol';
+  const category = (protocol.category || '').toLowerCase();
+  const chains = Array.isArray(protocol.chains) && protocol.chains.length > 0 ? protocol.chains : ['Ethereum'];
+  const chainList = chains.join(', ');
+
+  let templates: string[] = [];
+
+  if (category.includes('lending') || category.includes('cdp') || category.includes('collateral')) {
+    templates = [
+      `Deposit USDC into ${name} on ${chainList} to supply liquidity and earn lending yield. Est cost: $12 gas, $200 capital. Cadence: weekly.`,
+      `Borrow against collateral on ${name} across ${chainList} to optimize capital efficiency. Est cost: $15 gas, $500 capital. Cadence: daily.`,
+      `Monitor health factor on ${name} (${chainList}) and rebalance positions if volatility spikes. Est cost: $8 gas, $0 capital. Cadence: daily.`,
+      `Claim staking rewards and governance emissions from ${name} on ${chainList}. Est cost: $5 gas, $0 capital. Cadence: weekly.`
+    ];
+  } else if (category.includes('dex') || category.includes('liquidity') || category.includes('amm')) {
+    templates = [
+      `Provide token pairs into liquidity pools on ${name} on ${chainList} to earn trading fee share. Est cost: $14 gas, $300 capital. Cadence: weekly.`,
+      `Stake LP tokens in ${name} farms across ${chainList} for enhanced yield incentives. Est cost: $10 gas, $150 capital. Cadence: weekly.`,
+      `Harvest trading fees and reward tokens from ${name} on ${chainList}. Est cost: $6 gas, $0 capital. Cadence: weekly.`,
+      `Rebalance concentrated liquidity ranges on ${name} (${chainList}) to avoid impermanent loss. Est cost: $18 gas, $400 capital. Cadence: daily.`
+    ];
+  } else if (category.includes('liquid staking') || category.includes('restaking') || category.includes('staking')) {
+    templates = [
+      `Stake native assets for liquid staking derivatives via ${name} on ${chainList}. Est cost: $10 gas, $250 capital. Cadence: weekly.`,
+      `Restake liquid tokens through ${name} across ${chainList} to secure active validation services. Est cost: $16 gas, $300 capital. Cadence: weekly.`,
+      `Compound staking rewards and restaking points on ${name} (${chainList}). Est cost: $7 gas, $0 capital. Cadence: weekly.`,
+      `Verify validator performance and withdrawal queue status on ${name} (${chainList}). Est cost: $4 gas, $0 capital. Cadence: daily.`
+    ];
+  } else if (category.includes('yield') || category.includes('aggregator') || category.includes('farm')) {
+    templates = [
+      `Deposit stablecoins into ${name} vaults on ${chainList} for automated yield compounding. Est cost: $12 gas, $300 capital. Cadence: weekly.`,
+      `Rotate yield strategies across ${chainList} via ${name} to capture highest APY. Est cost: $20 gas, $500 capital. Cadence: weekly.`,
+      `Claim compounding yields and governance rewards from ${name} on ${chainList}. Est cost: $6 gas, $0 capital. Cadence: weekly.`,
+      `Audit vault risk parameters and tvl utilization on ${name} (${chainList}). Est cost: $5 gas, $0 capital. Cadence: weekly.`
+    ];
+  } else if (category.includes('derivatives') || category.includes('perpetuals') || category.includes('options') || category.includes('synthetics')) {
+    templates = [
+      `Open delta-neutral perp positions or provide margin to ${name} on ${chainList}. Est cost: $15 gas, $400 capital. Cadence: daily.`,
+      `Stake platform tokens in ${name} insurance or safety module across ${chainList}. Est cost: $10 gas, $200 capital. Cadence: weekly.`,
+      `Claim trading fee rebates and staking yields from ${name} on ${chainList}. Est cost: $5 gas, $0 capital. Cadence: weekly.`,
+      `Monitor funding rates and margin ratios on ${name} (${chainList}) to prevent liquidation. Est cost: $8 gas, $0 capital. Cadence: daily.`
+    ];
+  } else if (category.includes('bridge') || category.includes('cross chain') || category.includes('canonical')) {
+    templates = [
+      `Transfer assets across supported networks using ${name} bridge infrastructure (${chainList}). Est cost: $25 gas, $500 capital. Cadence: weekly.`,
+      `Provide liquidity to ${name} bridge pools on ${chainList} to earn relay fees. Est cost: $14 gas, $300 capital. Cadence: weekly.`,
+      `Claim cross-chain relay rewards and bridge incentives from ${name} (${chainList}). Est cost: $6 gas, $0 capital. Cadence: weekly.`,
+      `Check bridge security proofs and validator set updates for ${name}. Est cost: $4 gas, $0 capital. Cadence: weekly.`
+    ];
+  } else {
+    templates = [
+      `Interact with core smart contracts of ${name} deployed on ${chainList} to maintain active user status. Est cost: $10 gas, $100 capital. Cadence: weekly.`,
+      `Participate in governance votes and community proposals for ${name} across ${chainList}. Est cost: $4 gas, $0 capital. Cadence: weekly.`,
+      `Stake governance tokens in ${name} safety modules on ${chainList} to earn protocol revenue. Est cost: $8 gas, $150 capital. Cadence: weekly.`,
+      `Claim periodic rewards and ecosystem incentives distributed by ${name} (${chainList}). Est cost: $5 gas, $0 capital. Cadence: weekly.`
+    ];
+  }
+
+  // Ensure 4 to 8 steps
+  const steps = [...templates];
+  if (steps.length < 5) {
+    steps.push(`Perform supplementary transaction on ${name} (${chainList}) to boost onchain interaction history. Est cost: $9 gas, $50 capital. Cadence: weekly.`);
+  }
+  if (steps.length < 6) {
+    steps.push(`Review security advisories and audit updates for ${name} across ${chainList}. Est cost: $3 gas, $0 capital. Cadence: weekly.`);
+  }
+
+  return steps;
+}
+// __NEXT_CHUNK__
