@@ -57,4 +57,27 @@ function breadthFactor(chains: string[] = [], category: string = ''): number {
   return factor;
 }
 
+function impliedValue(protocol: any, asOf: string | number): number {
+  const tvl = Number(protocol.tvl_usd) || 0;
+  const change7d = Number(protocol.change_7d) || 0;
+  const chains = protocol.chains || [];
+  const category = protocol.category || '';
+  const listedAt = protocol.listed_at || asOf;
+  const aYears = ageYears(listedAt, asOf);
+  const mom = momentumFactor(change7d);
+  const breadth = breadthFactor(chains, category);
+  const ageDisc = Math.max(0.5, 1 - 0.05 * aYears);
+
+  let baseMult = 1.0;
+  const hasMcap = protocol.mcap_usd !== undefined && protocol.mcap_usd !== null && !isNaN(Number(protocol.mcap_usd));
+  
+  if (!hasMcap) {
+    baseMult = 3.5;
+  } else {
+    baseMult = 0.2;
+  }
+
+  return tvl * baseMult * mom * breadth * ageDisc;
+}
+
 // __NEXT_CHUNK__
