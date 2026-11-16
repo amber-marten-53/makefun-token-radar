@@ -1,1 +1,99 @@
-<!DOCTYPE html><html><head><title>Token Launch Radar</title></head><body>placeholder</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Launch Radar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <header class="site-header">
+    <div class="header-content">
+      <div class="brand">
+        <h1>Token Launch Radar</h1>
+        <span class="subtitle">Pre-Token vs Has-Token Ecosystem Tracking</span>
+      </div>
+      <div class="methodology-note">
+        <p><strong>Methodology:</strong> Tracks TVL velocity, social growth, and implied token valuations for protocols pre-token and post-launch. Data is modeled from on-chain liquidity pools, governance proposals, and historical launch multipliers.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section class="controls-section">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by name, symbol, category..." aria-label="Search tokens">
+      </div>
+      <div class="filter-group">
+        <div class="select-wrapper">
+          <select id="categorySelect" aria-label="Filter by category">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <div class="select-wrapper">
+          <select id="chainSelect" aria-label="Filter by chain">
+            <option value="">All Chains</option>
+          </select>
+        </div>
+        <div class="toggle-wrapper" role="radiogroup" aria-label="Token Status Filter">
+          <button type="button" class="toggle-btn active" data-status="all">All</button>
+          <button type="button" class="toggle-btn" data-status="pre-token">Pre-Token</button>
+          <button type="button" class="toggle-btn" data-status="has-token">Has Token</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <section class="table-section">
+        <div class="table-responsive">
+          <table id="radarTable">
+            <thead>
+              <tr>
+                <th data-sort="rank" class="sortable">Rank <span class="sort-indicator">↕</span></th>
+                <th data-sort="name" class="sortable">Name <span class="sort-indicator">↕</span></th>
+                <th data-sort="tvl" class="sortable">TVL <span class="sort-indicator">↕</span></th>
+                <th data-sort="change7d" class="sortable">7d Change <span class="sort-indicator">↕</span></th>
+                <th data-sort="impliedValue" class="sortable">Implied Value <span class="sort-indicator">↕</span></th>
+              </tr>
+            </thead>
+            <tbody id="radarTableBody">
+              <!-- Filled by app.js -->
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar">
+          <span id="rowCountDisplay" class="row-count">Showing 0 protocols</span>
+          <div class="pagination-controls">
+            <button id="prevPageBtn" class="page-btn" disabled>Previous</button>
+            <span id="pageIndicator" class="page-indicator">Page 1 of 1</span>
+            <button id="nextPageBtn" class="page-btn" disabled>Next</button>
+          </div>
+        </div>
+      </section>
+      <aside class="detail-section" id="detailSection">
+        <div class="detail-placeholder" id="detailPlaceholder">
+          <div class="placeholder-icon">radar</div>
+          <h3>Select a Protocol</h3>
+          <p>Click any row in the table to inspect detailed metrics, tokenomics, implied valuation breakdown, and catalysts.</p>
+        </div>
+        <div class="detail-content hidden" id="detailContent">
+          <!-- Filled dynamically by app.js -->
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>Token Launch Radar &bull; Built for analytical insight into protocol tokenization stages. No financial advice.</p>
+      <div class="footer-meta">
+        <span id="dataStatusIndicator">Data loaded successfully</span>
+        <span id="lastUpdatedSpan">Updated recently</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
